@@ -41,10 +41,19 @@ describe "UserPages" do
 	end
 	describe "profile page" do
 		let(:user) {FactoryGirl.create(:user)}
+		let!(:a1) {FactoryGirl.create(:article, user: user, title: "Foo", content: "Foo")}
+		let!(:a2) {FactoryGirl.create(:article, user: user, title: "Bar", content: "Bar")}
+
 		before {visit user_path(user)}
 
 		it {should have_content(user.name)}
 		it {should have_title(user.name)}
+
+		describe "articles" do
+			it {should have_content(a1.title)}
+			it {should have_content(a2.title)}
+			it {should have_content(user.articles.count)}
+		end
 	end
 	describe "signup page" do
 		before {visit signup_path}
